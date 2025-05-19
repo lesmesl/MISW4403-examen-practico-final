@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AirlineModule } from './airline/airline.module';
 import { AirlineEntity } from './airline/airline.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AirportEntity } from './airport/airport.entity';
+import { AirlineAirportController } from './airline/airline-airport.controller';
 
 @Module({
   imports: [
+    AirlineModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -19,7 +22,7 @@ import { AirportEntity } from './airport/airport.entity';
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, AirlineAirportController],
   providers: [AppService],
 })
 export class AppModule {}

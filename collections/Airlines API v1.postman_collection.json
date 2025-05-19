@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "53875329-dad5-4e96-9b69-09406e7d450b",
+		"name": "Airlines API v1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30444108"
+	},
+	"item": [
+		{
+			"name": "Create Airline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"\tpm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Save airline ID in variable\", function () {\r",
+							"\tpm.collectionVariables.set(\"airlineId\", pm.response.json().id);\r",
+							"\tpm.collectionVariables.set(\"airlineName\", pm.response.json().nombre);\r",
+							"\tpm.collectionVariables.set(\"airlineDescription\", pm.response.json().descripcion);\r",
+							"\tpm.collectionVariables.set(\"airlineFechaFundacion\", pm.response.json().fechaFundacion);\r",
+							"\tpm.collectionVariables.set(\"airlinePaginaWeb\", pm.response.json().paginaWeb);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Check if the response contains the specified keys\r",
+							"pm.test('Response body contains expected keys', function () {\r",
+							"    pm.expect(response).to.have.property('nombre');\r",
+							"    pm.expect(response).to.have.property('descripcion');\r",
+							"    pm.expect(response).to.have.property('fechaFundacion');\r",
+							"    pm.expect(response).to.have.property('paginaWeb');\r",
+							"    pm.expect(response).to.have.property('id');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolínea colombiana\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Airlines",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Ensure that the response body contains at least one record\r",
+							"pm.test(\"At least one record is returned\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.be.an('array').that.is.not.empty;\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Airline by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Check if the response contains the specified keys\r",
+							"pm.test('Response body contains expected keys', function () {\r",
+							"    pm.expect(response).to.have.property('nombre');\r",
+							"    pm.expect(response).to.have.property('descripcion');\r",
+							"    pm.expect(response).to.have.property('fechaFundacion');\r",
+							"    pm.expect(response).to.have.property('paginaWeb');\r",
+							"    pm.expect(response).to.have.property('id');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{airlineId}}"
+					]
+				},
+				"description": "Replace airlineId variable with a valid UUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Airline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Extracting the response body\r",
+							"const responseBody = pm.response.json();\r",
+							"\r",
+							"// Validating if the updated nombre is different from the airlineName variable\r",
+							"pm.test(\"Validating if the updated nombre is different from the airlineName variable\", function () {\r",
+							"    pm.expect(responseBody.nombre).to.not.equal(pm.collectionVariables.get(\"airlineName\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Avianca Updated\",\n    \"descripcion\": \"Aerolínea colombiana actualizada\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{airlineId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate error DTO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code 400\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"// Test to validate the error message \"Validation failed\"\r",
+							"pm.test(\"Error message should contain 'Validation failed'\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.message).to.include('Validation failed');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Avianca Updated\",\n    \"descripcion\": \"Aerolínea colombiana actualizada\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{airlineName}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{airlineName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Airline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code 204\r",
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{airlineId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/v1",
+			"type": "default"
+		},
+		{
+			"key": "airlineId",
+			"value": ""
+		},
+		{
+			"key": "airlineName",
+			"value": ""
+		},
+		{
+			"key": "airlineDescription",
+			"value": ""
+		},
+		{
+			"key": "airlineFechaFundacion",
+			"value": ""
+		},
+		{
+			"key": "airlinePaginaWeb",
+			"value": ""
+		}
+	]
+}
