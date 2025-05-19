@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "794bae36-3dc0-4972-963d-6def7801beff",
-		"name": "Airports  API v1",
+		"_postman_id": "53875329-dad5-4e96-9b69-09406e7d450b",
+		"name": "Aerolíneas",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30444108"
 	},
 	"item": [
 		{
-			"name": "Crear un aeropuerto válido",
+			"name": "Crear una aerolínea válida",
 			"event": [
 				{
 					"listen": "test",
@@ -18,11 +18,11 @@
 							"});\r",
 							"\r",
 							"pm.test(\"Save airline ID in variable\", function () {\r",
-							"\tpm.collectionVariables.set(\"airportNombre\", pm.response.json().nombre);\r",
-							"\tpm.collectionVariables.set(\"airportCodigo\", pm.response.json().codigo);\r",
-							"\tpm.collectionVariables.set(\"airportCiudad\", pm.response.json().ciudad);\r",
-							"\tpm.collectionVariables.set(\"airportPais\", pm.response.json().pais);\r",
-							"\tpm.collectionVariables.set(\"airportId\", pm.response.json().id);\r",
+							"\tpm.collectionVariables.set(\"airlineId\", pm.response.json().id);\r",
+							"\tpm.collectionVariables.set(\"airlineName\", pm.response.json().nombre);\r",
+							"\tpm.collectionVariables.set(\"airlineDescription\", pm.response.json().descripcion);\r",
+							"\tpm.collectionVariables.set(\"airlineFechaFundacion\", pm.response.json().fechaFundacion);\r",
+							"\tpm.collectionVariables.set(\"airlinePaginaWeb\", pm.response.json().paginaWeb);\r",
 							"});\r",
 							"\r",
 							"const response = pm.response.json();\r",
@@ -30,9 +30,9 @@
 							"// Check if the response contains the specified keys\r",
 							"pm.test('Response body contains expected keys', function () {\r",
 							"    pm.expect(response).to.have.property('nombre');\r",
-							"    pm.expect(response).to.have.property('codigo');\r",
-							"    pm.expect(response).to.have.property('ciudad');\r",
-							"    pm.expect(response).to.have.property('pais');\r",
+							"    pm.expect(response).to.have.property('descripcion');\r",
+							"    pm.expect(response).to.have.property('fechaFundacion');\r",
+							"    pm.expect(response).to.have.property('paginaWeb');\r",
 							"    pm.expect(response).to.have.property('id');\r",
 							"});\r",
 							""
@@ -52,22 +52,22 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"El Dorado\",\n    \"codigo\": \"BOG\",\n    \"ciudad\": \"Bogotá\",\n    \"pais\": \"Colombia\"\n}"
+					"raw": "{\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolínea colombiana\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/airports",
+					"raw": "{{baseUrl}}/airlines",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports"
+						"airlines"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Crear un aeropuerto inválido",
+			"name": "Crear una aerolínea inválida.",
 			"event": [
 				{
 					"listen": "test",
@@ -79,7 +79,7 @@
 							"\r",
 							"pm.test(\"Response body contains correct message\", function () {\r",
 							"\tvar jsonData = pm.response.json();\r",
-							"\tpm.expect(jsonData.message).to.eql(\"El código del aeropuerto debe tener exactamente tres caracteres\");\r",
+							"\tpm.expect(jsonData.message).to.eql(\"La fecha de fundación debe ser una fecha pasada\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -97,22 +97,22 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"El Dorado\",\n    \"codigo\": 123213123,\n    \"ciudad\": \"Bogotá\",\n    \"pais\": \"Colombia\"\n}"
+					"raw": "{\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolínea colombiana\",\n    \"fechaFundacion\": \"2030-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/airports",
+					"raw": "{{baseUrl}}/airlines",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports"
+						"airlines"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Obtener todos los aeropuertos",
+			"name": "Obtener todas las aerolíneas",
 			"event": [
 				{
 					"listen": "test",
@@ -140,19 +140,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/airports",
+					"raw": "{{baseUrl}}/airlines",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports"
+						"airlines"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Obtener un aeropuerto por ID",
+			"name": "Obtener una aerolínea por ID",
 			"event": [
 				{
 					"listen": "test",
@@ -167,11 +167,11 @@
 							"\r",
 							"// Check if the response contains the specified keys\r",
 							"pm.test('Response body contains expected keys', function () {\r",
-							"    pm.expect(response).to.have.property('id');\r",
 							"    pm.expect(response).to.have.property('nombre');\r",
-							"    pm.expect(response).to.have.property('codigo');\r",
-							"    pm.expect(response).to.have.property('pais');\r",
-							"    pm.expect(response).to.have.property('ciudad');\r",
+							"    pm.expect(response).to.have.property('descripcion');\r",
+							"    pm.expect(response).to.have.property('fechaFundacion');\r",
+							"    pm.expect(response).to.have.property('paginaWeb');\r",
+							"    pm.expect(response).to.have.property('id');\r",
 							"});\r",
 							""
 						],
@@ -184,21 +184,21 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/airports/{{airportId}}",
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"{{airportId}}"
+						"airlines",
+						"{{airlineId}}"
 					]
 				},
-				"description": "Replace airportId variable with a valid UUID"
+				"description": "Replace airlineId variable with a valid UUID"
 			},
 			"response": []
 		},
 		{
-			"name": "Obtener un aeropuerto por un ID que no existe",
+			"name": "Obtener una aerolínea por un ID que no existe",
 			"event": [
 				{
 					"listen": "test",
@@ -211,9 +211,9 @@
 							"\r",
 							"const response = pm.response.json();\r",
 							"\r",
-							"// Check for the correct message in the response body message\": \"El aeropuerto con el id dado no fue encontrado\"\r",
+							"// Check for the correct message in the response body message\": \"La aerolínea con el id dado no fue encontrada\"\r",
 							"pm.test(\"Response message is correct\", function () {\r",
-							"\tpm.expect(response.message).to.eql(\"El aeropuerto con el id dado no fue encontrado\");\r",
+							"\tpm.expect(response.message).to.eql(\"La aerolínea con el id dado no fue encontrada\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -225,21 +225,21 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/airports/2fd4e33c-2cc7-46b2-9055-52d9d541791d",
+					"raw": "{{baseUrl}}/airlines/d96be881-44dd-47a8-838c-115afabfd591",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"2fd4e33c-2cc7-46b2-9055-52d9d541791d"
+						"airlines",
+						"d96be881-44dd-47a8-838c-115afabfd591"
 					]
 				},
-				"description": "Replace airportId variable with a valid UUID"
+				"description": "Replace airlineId variable with a valid UUID"
 			},
 			"response": []
 		},
 		{
-			"name": "Actualizar un aeropuerto",
+			"name": "Actualizar una aerolínea",
 			"event": [
 				{
 					"listen": "test",
@@ -255,7 +255,7 @@
 							"\r",
 							"// Validating if the updated nombre is different from the airlineName variable\r",
 							"pm.test(\"Validating if the updated nombre is different from the airlineName variable\", function () {\r",
-							"    pm.expect(responseBody.nombre).to.not.equal(pm.collectionVariables.get(\"airportNombre\"));\r",
+							"    pm.expect(responseBody.nombre).to.not.equal(pm.collectionVariables.get(\"airlineName\"));\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -273,23 +273,23 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"El Dorado Updated\",\n    \"codigo\": \"BOG\",\n    \"ciudad\": \"Bogotá\",\n    \"pais\": \"Colombia\"\n}"
+					"raw": "{\n    \"nombre\": \"Avianca Updated\",\n    \"descripcion\": \"Aerolínea colombiana actualizada\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/airports/{{airportId}}",
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"{{airportId}}"
+						"airlines",
+						"{{airlineId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Actualizar un aeropuerto con un ID que no existe",
+			"name": "Actualizar una aerolínea con un ID que no existe",
 			"event": [
 				{
 					"listen": "test",
@@ -297,14 +297,14 @@
 						"exec": [
 							"// Test for status code 404\r",
 							"pm.test(\"Status code is 404\", function () {\r",
-							"\tpm.response.to.have.status(404);\r",
+							"    pm.response.to.have.status(404);\r",
 							"});\r",
 							"\r",
 							"const response = pm.response.json();\r",
 							"\r",
-							"// Check for the correct message in the response body message\": \"El aeropuerto con el id dado no fue encontrado\"\r",
+							"// Check for the correct message in the response body message\": \"La aerolínea con el id dado no fue encontrada\"\r",
 							"pm.test(\"Response message is correct\", function () {\r",
-							"\tpm.expect(response.message).to.eql(\"El aeropuerto con el id dado no fue encontrado\");\r",
+							"\tpm.expect(response.message).to.eql(\"La aerolínea con el id dado no fue encontrada\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -322,23 +322,23 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"El Dorado Updated\",\n    \"codigo\": \"BOG\",\n    \"ciudad\": \"Bogotá\",\n    \"pais\": \"Colombia\"\n}"
+					"raw": "{\n    \"nombre\": \"Avianca Updated\",\n    \"descripcion\": \"Aerolínea colombiana actualizada\",\n    \"fechaFundacion\": \"1919-12-05\",\n    \"paginaWeb\": \"https://www.avianca.com\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/airports/2fd4e33c-2cc7-46b2-9055-52d9d541791d",
+					"raw": "{{baseUrl}}/airlines/98eab6cf-6e84-453e-aed3-6b73d73cf3e2",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"2fd4e33c-2cc7-46b2-9055-52d9d541791d"
+						"airlines",
+						"98eab6cf-6e84-453e-aed3-6b73d73cf3e2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Eliminar un aeropuerto por su ID",
+			"name": "Eliminar una aerolínea por su ID",
 			"event": [
 				{
 					"listen": "test",
@@ -360,20 +360,20 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/airports/{{airportId}}",
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"{{airportId}}"
+						"airlines",
+						"{{airlineId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Eliminar un aeropuerto con un ID que no existe",
+			"name": "Eliminar una aerolínea con un ID que no existe",
 			"event": [
 				{
 					"listen": "test",
@@ -386,9 +386,9 @@
 							"\r",
 							"const response = pm.response.json();\r",
 							"\r",
-							"// Check for the correct message in the response body message\": \"El aeropuerto con el id dado no fue encontrado\"\r",
+							"// Check for the correct message in the response body message\": \"La aerolínea con el id dado no fue encontrada\"\r",
 							"pm.test(\"Response message is correct\", function () {\r",
-							"\tpm.expect(response.message).to.eql(\"El aeropuerto con el id dado no fue encontrado\");\r",
+							"\tpm.expect(response.message).to.eql(\"La aerolínea con el id dado no fue encontrada\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -400,17 +400,39 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/airports/{{airportId}}",
+					"raw": "{{baseUrl}}/airlines/{{airlineId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"airports",
-						"{{airportId}}"
+						"airlines",
+						"{{airlineId}}"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
@@ -420,43 +442,23 @@
 			"type": "default"
 		},
 		{
-			"key": "airportsNombre",
+			"key": "airlineId",
 			"value": ""
 		},
 		{
-			"key": "airportsCodigo",
+			"key": "airlineName",
 			"value": ""
 		},
 		{
-			"key": "airportsCiudad",
+			"key": "airlineDescription",
 			"value": ""
 		},
 		{
-			"key": "airportsPais",
+			"key": "airlineFechaFundacion",
 			"value": ""
 		},
 		{
-			"key": "airportsId",
-			"value": ""
-		},
-		{
-			"key": "airportNombre",
-			"value": ""
-		},
-		{
-			"key": "airportCodigo",
-			"value": ""
-		},
-		{
-			"key": "airportCiudad",
-			"value": ""
-		},
-		{
-			"key": "airportPais",
-			"value": ""
-		},
-		{
-			"key": "airportId",
+			"key": "airlinePaginaWeb",
 			"value": ""
 		}
 	]
