@@ -34,7 +34,11 @@ export class AirlineService {
 
   async create(airline: AirlineEntity): Promise<AirlineEntity> {
     const hoy = new Date();
-    if (airline.fechaFundacion >= hoy) {
+    
+    // Asegurarse de que fechaFundacion sea un objeto Date
+    const fechaFundacion = new Date(airline.fechaFundacion);
+    
+    if (fechaFundacion >= hoy) {
       throw new BusinessLogicException(
         'La fecha de fundación debe ser una fecha pasada',
         BusinessError.PRECONDITION_FAILED,
@@ -42,7 +46,7 @@ export class AirlineService {
     }
     return await this.airlineRepository.save(airline);
   }
-
+  
   async update(id: string, airline: AirlineEntity): Promise<AirlineEntity> {
     const persisted = await this.airlineRepository.findOne({ where: { id } });
     if (!persisted) {
@@ -51,8 +55,13 @@ export class AirlineService {
         BusinessError.NOT_FOUND,
       );
     }
+    
     const hoy = new Date();
-    if (airline.fechaFundacion >= hoy) {
+    
+    // Asegurarse de que fechaFundacion sea un objeto Date
+    const fechaFundacion = new Date(airline.fechaFundacion);
+    
+    if (fechaFundacion >= hoy) {
       throw new BusinessLogicException(
         'La fecha de fundación debe ser una fecha pasada',
         BusinessError.PRECONDITION_FAILED,
